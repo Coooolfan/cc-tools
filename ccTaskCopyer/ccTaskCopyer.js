@@ -113,7 +113,7 @@
             backgroundColor: '#ffffff',
             borderRadius: '8px',
             boxShadow: '0 0 10px rgba(0, 0, 0, 0.15)',
-            zIndex: '9999',
+            zIndex: '50',
             fontFamily: 'Arial, "Microsoft YaHei", sans-serif',
             fontSize: '14px',
             transition: 'all 0.3s ease',
@@ -457,7 +457,7 @@
             right: 0,
             bottom: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            zIndex: 10000,
+            zIndex: 50,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center'
