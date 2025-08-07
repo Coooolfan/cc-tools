@@ -12,8 +12,26 @@
 (function() {
     'use strict';
 
-    // 等待页面加载完成后0.5秒再执行检测
-    setTimeout(function() {
+    // 成功标志位，防止重复执行
+    let isSuccess = false;
+    // 最大重试次数
+    const maxRetries = 10;
+    // 当前重试次数
+    let currentRetry = 0;
+
+    // 递归重试函数
+    function attemptAutoFill() {
+        // 如果已经成功或超过最大重试次数，停止尝试
+        if (isSuccess || currentRetry >= maxRetries) {
+            if (currentRetry >= maxRetries && !isSuccess) {
+                console.log('达到最大重试次数，停止尝试自动填充');
+            }
+            return;
+        }
+
+        currentRetry++;
+        console.log(`第${currentRetry}次尝试自动填充...`);
+
         // 检查页面是否存在指定的ICP备案号文本
         if (document.body.innerText.includes('浙ICP备20007605号-1') &&
             document.body.innerText.includes('主账号登录')&&
@@ -48,14 +66,23 @@
                 console.log('未找到密码输入框');
             }
 
-            // 显示成功提示
+            // 如果成功填充了任何字段，设置成功标志并显示提示
             if (successCount > 0) {
+                isSuccess = true;
+                console.log(`自动填充成功，共填充${successCount}个字段`);
                 showSuccessNotification(`要不试试默认账号密码😛`);
+                return; // 成功后立即返回，不再重试
             }
-
-        } else {
         }
-    }, 500); // 延时0.5秒
+
+        // 如果未成功，500ms后递归重试
+        if (!isSuccess) {
+            setTimeout(attemptAutoFill, 500);
+        }
+    }
+
+    // 开始第一次尝试，延时0.5秒
+    setTimeout(attemptAutoFill, 500);
 
     // 创建成功提示的函数
     function showSuccessNotification(message) {
