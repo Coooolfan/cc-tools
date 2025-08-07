@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         自动填充登录信息
+// @name         CloudCanal自动填充登录信息
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  当页面包含指定ICP备案号时自动填充登录表单
 // @author       Claude Sonnet 4
 // @match        *://*/*
@@ -30,12 +30,10 @@
         }
 
         currentRetry++;
-        console.log(`第${currentRetry}次尝试自动填充...`);
 
         // 检查页面是否存在指定的ICP备案号文本
         if (document.body.innerText.includes('浙ICP备20007605号-1') &&
-            document.body.innerText.includes('主账号登录')&&
-            document.body.innerText.includes('子账号登录')) {
+            document.body.innerText.includes('账号登录')) {
             console.log('检测到目标页面，开始自动填充登录信息...');
 
             let successCount = 0;
@@ -49,8 +47,6 @@
                 emailInput.dispatchEvent(new Event('change', { bubbles: true }));
                 console.log('邮箱/手机号已填充');
                 successCount++;
-            } else {
-                console.log('未找到邮箱/手机号输入框');
             }
 
             // 查找并填充密码输入框
@@ -62,8 +58,6 @@
                 passwordInput.dispatchEvent(new Event('change', { bubbles: true }));
                 console.log('密码已填充');
                 successCount++;
-            } else {
-                console.log('未找到密码输入框');
             }
 
             // 如果成功填充了任何字段，设置成功标志并显示提示
