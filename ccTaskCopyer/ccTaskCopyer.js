@@ -608,15 +608,16 @@
     function handleUrlChange() {
         const currentUrl = window.location.href;
 
-        if(currentUrl.includes('data/job/list')){
-            const panel = document.getElementById('job-data-panel');
-            if (panel) {
-                panel.style.display = 'none';
-            }
-        }
-        else if (currentUrl.includes('/job/')) {
-            init(); // init 函数会处理面板的显示和数据加载
+        // 使用正则精确判断是否为任务详情页：/job/ 后紧跟数字
+        // 例如: http://localhost:8111/#/data/job/608
+        const jobMatch = currentUrl.match(/\/job\/(\d+)/);
+
+        if (jobMatch) {
+            // 匹配成功，说明是任务详情页，执行初始化/显示逻辑
+            init(); 
         } else {
+            // 匹配失败（例如列表页、创建页 /job/create、或其他页面）
+            // 强制隐藏面板
             const panel = document.getElementById('job-data-panel');
             if (panel) {
                 panel.style.display = 'none';
